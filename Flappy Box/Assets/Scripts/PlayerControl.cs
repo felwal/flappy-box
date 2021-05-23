@@ -18,8 +18,7 @@ public class PlayerControl : MonoBehaviour {
     public Transform player;
     Vector3 startPosition;
 
-    public static bool sky; //
-
+    public static bool sky;
 
     void Start () {
 
@@ -27,7 +26,6 @@ public class PlayerControl : MonoBehaviour {
         startPosition = player.position;
 
     }
-
     void FixedUpdate () {
 
         t += Time.deltaTime;
@@ -36,15 +34,16 @@ public class PlayerControl : MonoBehaviour {
         switch (gameMode) {
 
             case 0:
-                player.position += FlyPhysics.flySine(t); // fly
-                //player.eulerAngles = FlyPhysics.rotateSine(t); // rotate
+                player.position += FlyPhysics.FlySine(t); // fly
+                player.eulerAngles = FlyPhysics.RotateSine(t); // rotate
                 break;
             case 1:
-                player.position += FlyPhysics.flyQuad(t, g, v0);
-                //player.eulerAngles = FlyPhysics.rotateQuad(t, g, v0);
+                player.position += FlyPhysics.FlyQuad(t, g, v0);
+                player.eulerAngles = FlyPhysics.RotateQuad(t, g, v0);
+                //player.eulerAngles = FlyPhysics.rotateDive(t, g, v0);
                 break;
             case 2:
-                player.position += FlyPhysics.flyQuad(t, g, 0f);
+                player.position += FlyPhysics.FlyQuad(t, g, 0f);
                 player.eulerAngles = new Vector3(0f, 0f, -90f);
                 break;
             case 3: break;
@@ -57,14 +56,14 @@ public class PlayerControl : MonoBehaviour {
 
                 case 0: // jump + start game
                     t = 0; gameMode = 1;
-                    break; 
+                    break;
                 case 1: // jump
                     t = 0;
-                    break; 
+                    break;
                 case 2: // move to ground
                     player.position = new Vector3(player.position.x, -3.5f, player.position.z);
                     gameMode = 3;
-                    break; 
+                    break;
                 case 3:  // reset game
                     t = 0;
                     player.position = startPosition;
@@ -72,15 +71,16 @@ public class PlayerControl : MonoBehaviour {
                     if (score > scoreHigh) { scoreHigh = score; } score = 0;
                     break;
             }
-        } 
-
+        }
 
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
 
-        if      (other.gameObject.tag == "Obstacle") { if (gameMode != 2)   { gameMode = 2; t = 0; } }  
-        else if (other.gameObject.tag == "Ground")                          { gameMode = 3; }
+        if (other.gameObject.tag == "Obstacle") {
+            if (gameMode != 2) { gameMode = 2; t = 0; }
+        }
+        else if (other.gameObject.tag == "Ground") { gameMode = 3; }
         else if (other.gameObject.tag == "Skybox") { sky = true; }
 
     }
@@ -89,12 +89,5 @@ public class PlayerControl : MonoBehaviour {
         if (other.gameObject.tag == "Skybox") { sky = false; }
 
     }
-    
 
 }
-
-// random float
-// pause, restart
-// skybox
-// understand rotations
-// save data

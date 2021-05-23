@@ -15,20 +15,19 @@ public class ObstacleDuo : MonoBehaviour {
         spawnPosition = obstacleDuo.transform.position;
 
     }
-
     private void FixedUpdate() {
 
         // movement x
         switch (PlayerControl.gameMode) {
             case 0: obstacleDuo.transform.position = spawnPosition; passed = false; break; // spawn
-            case 1: obstacleDuo.transform.position += FlyPhysics.moveX(Obstacles.vx); break; // move x
+            case 1: obstacleDuo.transform.position += FlyPhysics.MoveX(Obstacles.vx); break; // move x
             case 2: break;
             case 3: break;
         }
 
         // respawn
         if (obstacleDuo.transform.position.x <= -Obstacles.spacing * Obstacles.offset) {
-            obstacleDuo.transform.position = respawnPosition();
+            obstacleDuo.transform.position = RespawnPosition();
             passed = false;
         }
 
@@ -40,7 +39,7 @@ public class ObstacleDuo : MonoBehaviour {
 
     }
 
-    public Vector3 respawnPosition() {
+    public Vector3 RespawnPosition() {
 
         Vector3 respawnPosition = new Vector3(
             Obstacles.amount * Obstacles.spacing - Obstacles.spacing * Obstacles.offset, // x
